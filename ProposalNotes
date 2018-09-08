@@ -32,7 +32,7 @@ https://www.cs.drexel.edu/~greenie/privacy/fp660-zheleva.pdf
 #Problem Statement 
 
 Given a User X and an adversary A, what can X know about A even though it has no direct acess to X's information.
-X may block A, but A may still have access to X's neighbours in one particular social network graph.
+X may block A, but A may still have access to X's neighbours in one particular social network graph ( OR MULTIPLE SOCIAL NETWORK GRAPHS)
 The profiles may be private or public. 
 
 Preliminary Thoughts
