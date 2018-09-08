@@ -29,7 +29,7 @@ https://link.springer.com/chapter/10.1007/978-3-642-29038-1_25
 
 https://www.cs.drexel.edu/~greenie/privacy/fp660-zheleva.pdf
 
-#Problem Statement 
+#Problem Statement 1
 
 Given a User X and an adversary A, what can X know about A even though it has no direct acess to X's information.
 X may block A, but A may still have access to X's neighbours in one particular social network graph ( OR MULTIPLE SOCIAL NETWORK GRAPHS)
