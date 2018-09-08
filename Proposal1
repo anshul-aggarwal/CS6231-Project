@@ -1,0 +1,22 @@
+#Problem Statement 1
+
+Given a User X and an adversary A, what can X know about A even though it has no direct acess to X's information.
+X may block A, but A may still have access to X's neighbours in one particular social network graph ( OR MULTIPLE SOCIAL NETWORK GRAPHS)
+The profiles may be private or public. 
+
+Preliminary Thoughts
+
+## Case 1 - Public Profiles
+
+The first step to mitigate such an attack is to block User A from all neighbours of X, but what about neighbours of neighbours. 
+
+## Case 2 - Private Profiles
+
+The second step is some profiles are private. User A can send messages to all private neighbours to not accept follow request 
+or to block the person. 
+
+## Case 3 - What if Adversary already in the network ? Then A will also have some links in the network. 
+
+Question - How many messages does a user A need to send ? Impractial if large number of messages
+How to identify small key number of neighbours to send block message to ? 
+How can the attacker maximize the number of posts in his/her newsfeed by targeting which users ?
