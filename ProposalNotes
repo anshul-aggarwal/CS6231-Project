@@ -15,7 +15,39 @@ http://www.utdallas.edu/~mxk055100/courses/privacy08f_files/inferring_privacy_is
 http://www.chennaisunday.com/IEEE%202013%20Java%20Basepaper/Preventing%20Private%20Information%20Inference%20Attacks%20on%20Social%20Networks.pdf
 
 
-Group Face Recognition
+#Group Face Recognition
 
 http://www.kinfacew.com/
 
+
+
+#Group Privacy on Online Social Networks
+
+https://dspace.library.uvic.ca/bitstream/handle/1828/8364/Chen_Jiayi_MASc_2017.pdf?sequence=1
+
+https://link.springer.com/chapter/10.1007/978-3-642-29038-1_25
+
+https://www.cs.drexel.edu/~greenie/privacy/fp660-zheleva.pdf
+
+#Problem Statement 
+
+Given a User X and an adversary A, what can X know about A even though it has no direct acess to X's information.
+X may block A, but A may still have access to X's neighbours in one particular social network graph.
+The profiles may be private or public. 
+
+Preliminary Thoughts
+
+## Case 1 - Public Profiles
+
+The first step to mitigate such an attack is to block User A from all neighbours of X, but what about neighbours of neighbours. 
+
+## Case 2 - Private Profiles
+
+The second step is some profiles are private. User A can send messages to all private neighbours to not accept follow request 
+or to block the person. 
+
+## Case 3 - What if Adversary already in the network ? Then A will also have some links in the network. 
+
+Question - How many messages does a user A need to send ? Impractial if large number of messages
+How to identify small key number of neighbours to send block message to ? 
+How can the attacker maximize the number of posts in his/her newsfeed by targeting which users ?
