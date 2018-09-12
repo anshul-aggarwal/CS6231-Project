@@ -1,3 +1,8 @@
 # Getting people's information using Amazon.com reviews. 
 
 Given a user, we can find out a lot about the user. 
+Amazon Reviews leave nuggets of information about a particular user. 
+
+
+Key Challenge - Tying down the user to a real world person. May be possible via linking various social networks. 
+Seems unlikely 
