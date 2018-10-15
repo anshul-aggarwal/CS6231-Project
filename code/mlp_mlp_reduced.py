@@ -72,7 +72,6 @@ for iter in range(iterations):
     #########P.S - KL Divergence is not symmteric ( which would be P and Q)
 
     divergence = entropy(clf1_prob,clf2_prob)
-    print(divergence)  
 
     div_diff = 0
 
@@ -98,7 +97,8 @@ for iter in range(iterations):
     
     if div_diff < 0:
         test_vector = deepcopy(temp_vector)
-    
+        print(divergence)
+
 
 clf1_prob = clf1.predict_proba([test_vector]).flatten()
 clf2_prob = clf2.predict_proba([test_vector]).flatten()
@@ -122,5 +122,4 @@ for i in range(len(x_d2)):
 #Points in training sets that are similar to the given vector
 si_1 = [tuple(x) for x in similar_inputs_1]
 si_2 = [tuple(x) for x in similar_inputs_2]
-print("No. common")
-print(len(set(si_1).intersection(set(si_2))))
+print("No. common" + str(len(set(si_1).intersection(set(si_2)))))
