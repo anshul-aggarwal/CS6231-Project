@@ -15,7 +15,7 @@ def isSimilar(vector1, vector2, min_similarity):
     for i in range(len(vector1)):
         if vector1[i] == vector2[i]:
             similar += 1
-    if similar > max_similarity:
+    if similar >= max_similarity:
             max_similarity = similar
             print(similar)
 
@@ -50,8 +50,8 @@ dimensions = len(x_d1.columns)
 change_count = int(change_rate*dimensions)
 
 #Define the ML Models (Both are Multi Layer Perceptrons)
-clf1 = MLPClassifier(solver='sgd',hidden_layer_sizes=(20, 10), random_state=1, alpha=0.001)
-clf2 = MLPClassifier(solver='sgd',hidden_layer_sizes=(30, 20), random_state=1, alpha=0.001)
+clf1 = MLPClassifier(solver='sgd',hidden_layer_sizes=(20, 10), random_state=1, alpha=0.001, max_iter=500)
+clf2 = MLPClassifier(solver='sgd',hidden_layer_sizes=(30, 20), random_state=1, alpha=0.001, max_iter=500)
 
 
 #Train the models
@@ -108,12 +108,16 @@ print(test_vector)
 #Check for similarity
 similar_inputs_1 = []
 
+print("--1--")
+
 for i in range(len(x_d1)):
     if isSimilar(test_vector, x_d1.iloc[i], int(0.5*dimensions)):
         similar_inputs_1.append(x_d1.iloc[i])
 
 
 similar_inputs_2 = []
+
+print("--2--")
 
 for i in range(len(x_d2)):
     if isSimilar(test_vector, x_d2.iloc[i], int(0.5*dimensions)):
@@ -122,4 +126,4 @@ for i in range(len(x_d2)):
 #Points in training sets that are similar to the given vector
 si_1 = [tuple(x) for x in similar_inputs_1]
 si_2 = [tuple(x) for x in similar_inputs_2]
-print("No. common" + str(len(set(si_1).intersection(set(si_2)))))
+print("No. common: " + str(len(set(si_1).intersection(set(si_2)))))
