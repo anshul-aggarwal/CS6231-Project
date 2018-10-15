@@ -28,8 +28,9 @@ def isSimilar(vector1, vector2, min_similarity):
 d1 = pd.read_csv("d1small")
 d2 = pd.read_csv("d2small")
 
-iterations = 100
-change_rate = 0.1
+iterations = 150
+internal_iterations_max = 150
+change_rate = 0.05
 
 
 #Separate into Attributes (50 only) and Target Variables
@@ -79,7 +80,7 @@ for iter in range(iterations):
     internal_iter = 0
 
     #Hill climb
-    while(div_diff >= 0 and internal_iter < 100):
+    while(div_diff >= 0 and internal_iter < internal_iterations_max):
         change_pos = random.sample(list(range(dimensions)), change_count)
 
         for pos in change_pos:
