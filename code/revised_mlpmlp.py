@@ -5,6 +5,7 @@ from scipy.stats import entropy
 from sklearn.neural_network import MLPClassifier
 from copy import deepcopy
 from collections import Counter
+import time
 
 import random
 
@@ -24,23 +25,24 @@ def similarityCalc(vector1, vector2):
 def calcLoss(vector1, vector2, augment_index):
     loss_vector = []
     for i in range(len(vector1)):
-        loss_multiplier = 0.01
+        loss_multiplier = 0.1
         if i == augment_index:
-            loss_multiplier = 0.02
+            loss_multiplier = 0.15
         
         loss_vector.append(loss_multiplier * ((vector1[i] - vector2[i])**2))
 
     loss_vector = np.array(loss_vector)
     return loss_vector
 
+start = time.time()
 
 #Read and Load the Datasets
 d1 = pd.read_csv("d1")
 d2 = pd.read_csv("d2")
 #common = pd.read_csv("common")
 
-iterations = 500
-internal_iterations_max = 500
+iterations = 1000
+internal_iterations_max = 250
 change_rate = 0.10
 
 # d1.iloc[:,0] = d1.iloc[:,0]//10
@@ -77,35 +79,32 @@ prediction_classes = range(1,101)
 for pred_class in prediction_classes:
     #Generate Random Point
     test_vector = np.random.choice([0, 1], size=dimensions)
-    print("Prediction Class" + str(pred_class))
+    print("Prediction Class " + str(pred_class))
+    loss_diff = float("inf")
     for iter in range(iterations):  
-
         #Predict Probability Scores
         clf1_prob = clf1.predict_proba([test_vector]).flatten()
         clf2_prob = clf2.predict_proba([test_vector]).flatten()
 
-
         #Get Loss
-
         loss_vector = calcLoss(clf1_prob,clf2_prob, pred_class)
         loss = sum(loss_vector)
 
-        loss_diff = 0
         temp_vector = deepcopy(test_vector)
         
         internal_iter = 0
 
         if int((iter/iterations)*100)%10 == 0:
             change_rate = change_rate*0.9
-
+        loss_diff = 0
         #Hill climb
         while(loss_diff >= 0 and internal_iter < internal_iterations_max):
             change_count = int(random.random()*change_rate*dimensions)
             if change_count < 1:
                     change_count = 1
 
-            change_pos = np.argsort(loss)[-1*change_count:]
-
+            change_pos = random.sample(list(range(dimensions)), change_count)
+                
             for pos in change_pos:
                 if temp_vector[pos] == 0:
                     temp_vector[pos] = 1
@@ -118,10 +117,11 @@ for pred_class in prediction_classes:
             
             loss_diff = loss_tempvect - loss
             internal_iter += 1
-        
-        if loss_diff < 0:
-            test_vector = deepcopy(temp_vector)
-            print(loss)
+            if loss_diff < 0:
+                test_vector = deepcopy(temp_vector)
+                print(loss)
+                break
+                
 
     reconstructed_vectors.append(test_vector)
 
@@ -132,7 +132,7 @@ for test_vector in reconstructed_vectors:
 
     #f.write("Test Vector:\n" + str(test_vector) + "\n")
 
-    f.write("\nTarget Class " + str(tcl))
+    f.write("\n\nTarget Class " + str(tcl))
     tcl+= 1
 
     #Check for similarity
@@ -202,3 +202,5 @@ for test_vector in reconstructed_vectors:
     f.write("\nY values in similar set 2\n" + str(counter_si2y))
 
 f.close()
+
+print(time.time() - start)
