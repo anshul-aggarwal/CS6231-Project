@@ -4,6 +4,7 @@ from sklearn.linear_model import LogisticRegression
 from scipy.stats import entropy
 from sklearn.neural_network import MLPClassifier
 from copy import deepcopy
+from collections import Counter
 
 import random
 
@@ -13,7 +14,7 @@ def isSimilar(vector1, vector2, min_similarity):
     global max_similarity
     similar = 0
     for i in range(len(vector1)):
-        if vector1[i] == vector2[i]:
+        if vector1[i] == vector2[i+1]:
             similar += 1
     if similar >= max_similarity:
             max_similarity = similar
@@ -27,11 +28,14 @@ def isSimilar(vector1, vector2, min_similarity):
 #Read and Load the Datasets
 d1 = pd.read_csv("d1")
 d2 = pd.read_csv("d2")
+#common = pd.read_csv("common")
 
-iterations = 1000
-internal_iterations_max = 1000
+iterations = 500
+internal_iterations_max = 500
 change_rate = 0.10
 
+# d1.iloc[:,0] = d1.iloc[:,0]//10
+# d2.iloc[:,0] = d2.iloc[:,0]//10
 
 #Separate into Attributes (50 only) and Target Variables
 y_d1 = d1.iloc[:,0]
@@ -39,6 +43,9 @@ x_d1 = d1.iloc[:,1:]
 
 y_d2 = d2.iloc[:,0]
 x_d2 = d2.iloc[:,1:]
+
+# common_y = common.iloc[:,0]
+# common_x = common.iloc[:,1:100]
 
 
 #Am converting target attribute into 10 classes from 100
@@ -110,19 +117,19 @@ for iter in range(iterations):
 clf1_prob = clf1.predict_proba([test_vector]).flatten()
 clf2_prob = clf2.predict_proba([test_vector]).flatten()
 
-f = open("statsMLPMLP", "w+")
+f = open("AdvStatsMLPMLP", "w+")
 
 f.write("Test Vector:\n" + str(test_vector) + "\n")
 
 #Check for similarity
-min_similarity = 0.5
+min_similarity = 0.55
 similar_inputs_1 = []
 
 print("--1--")
 
 for i in range(len(x_d1)):
-    if isSimilar(test_vector, x_d1.iloc[i], int(min_similarity*dimensions)):
-        similar_inputs_1.append(x_d1.iloc[i])
+    if isSimilar(test_vector, d1.iloc[i], int(min_similarity*dimensions)):
+        similar_inputs_1.append(d1.iloc[i])
 
 f.write("\nMax similarity 1: " + str(max_similarity))
 
@@ -131,8 +138,8 @@ similar_inputs_2 = []
 print("--2--")
 max_similarity = 0
 for i in range(len(x_d2)):
-    if isSimilar(test_vector, x_d2.iloc[i], int(min_similarity*dimensions)):
-        similar_inputs_2.append(x_d2.iloc[i])
+    if isSimilar(test_vector, d2.iloc[i], int(min_similarity*dimensions)):
+        similar_inputs_2.append(d2.iloc[i])
 
 f.write("\nMax similarity 2: " + str(max_similarity))
 
@@ -140,13 +147,46 @@ f.write("\nMax similarity 2: " + str(max_similarity))
 si_1 = [tuple(x) for x in similar_inputs_1]
 si_2 = [tuple(x) for x in similar_inputs_2]
 
-f.write("\nNo. common: " + str(len(set(si_1).intersection(set(si_2)))))
+commonset = list(set(si_1).intersection(set(si_2)))
 
-f1 = open("similar1MLPMLP", "w+")
-f1.write(str(si_1))
-f1.close()
-f2 = open("similar2MLPMLP", "w+")
-f2.write(str(si_2))
-f2.close()
+common_y = []
+
+for i in range(len(commonset)):
+    common_y.append(commonset[i][0])
+
+
+counter_commonset = Counter(common_y)
+
+
+f.write("\nNo. common: " + str(len(commonset)))
+f.write("\nY values in common set\n" + str(counter_commonset))
+
+si1_y = []
+
+for i in range(len(si_1)):
+    si1_y.append(si_1[i][0])
+
+
+counter_si1y = Counter(si1_y)
+
+f.write("\nSimilar in first dataset:" + str(len(set(si_1))))
+f.write("\nY values in similar set 1\n" + str(counter_si1y))
+
+si2_y = []
+
+for i in range(len(si_2)):
+    si2_y.append(si_2[i][0])
+
+counter_si2y = Counter(si2_y)
+
+f.write("\nSimilar in second dataset:" + str(len(set(si_2))))
+f.write("\nY values in similar set 2\n" + str(counter_si2y))
+
+# f1 = open("similar1MLPMLP", "w+")
+# f1.write(str(si_1))
+# f1.close()
+# f2 = open("similar2MLPMLP", "w+")
+# f2.write(str(si_2))
+# f2.close()
 
 f.close()
